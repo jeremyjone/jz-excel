@@ -47,7 +47,7 @@ parseExcel(excel, function (data, err) {
   if (data) {
     // 成功
 
-    // 注意: 为了不改变Lucky的数据结构，文本内容可能有两种格式，需要一些处理
+    // 注意: 为了不改变 Luckysheet 的数据结构，文本内容可能有两种格式，需要一些处理
     data.sheets[0].celldata.forEach(item => {
       // 提取所有内容
       let content = item?.v?.v ?? "";
