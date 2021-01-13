@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jz-Excel test</title>
+    <script src="https://desktop.jeremyjone.com/resource/js/jz-excel.min.js"></script>
+</head>
+
+<body>
+    <input type="file" name="upload" id="upload" onchange="onChange(event)" />
+
+    <div id="info"></div>
+    <script>
+        var div = document.querySelector("#info");
+
+        function onChange(e) {
+            div.innerHTML = "waiting...";
+            var excel = e.target.files[0];
+            parseExcel(excel, function (data, err) {
+                if (err) {
+                    div.innerHTML = err;
+                } else {
+                    console.log(data);
+                    div.innerHTML = "Data has been printed in Console, Press F12 and click Console tab.";
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
