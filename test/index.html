@@ -5,19 +5,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jz-Excel test</title>
-    <script src="https://desktop.jeremyjone.com/resource/js/jz-excel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.2/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.4/dist/index.min.js"></script>
 </head>
 
 <body>
+
+    <h3>上传</h3>
     <input type="file" name="upload" id="upload" onchange="onChange(event)" />
 
     <div id="info"></div>
+
+    <hr />
+
+    <h3>下载</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Name</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Jeremy</td>
+                <td>
+                    <img src="https://jeremyjone.github.io/toolbox/test/images/pic4(614x596).jpg" alt="图1" width="200">
+                    <img src="https://desktop.jeremyjone.com/my-test/banner/02.jpg" alt="图1" width="200">
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Conan</td>
+                <td>
+                    <img src="https://desktop.jeremyjone.com/my-test/banner/03.jpg" alt="图2" width="200">
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Other</td>
+                <td>
+                    <img src="https://desktop.jeremyjone.com/my-test/icon/00.png" alt="图3" width="200">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="onClickDown(event)">下载</button>
+
     <script>
         var div = document.querySelector("#info");
 
         function onChange(e) {
             div.innerHTML = "waiting...";
             var excel = e.target.files[0];
+            // Here has some problem, parseExcel in v1.0.3+ can not work in browser.
+            // Use v1.0.2, but it's old methods, just for example.
             parseExcel(excel, function (data, err) {
                 if (err) {
                     div.innerHTML = err;
@@ -26,6 +71,89 @@
                     div.innerHTML = "Data has been printed in Console, Press F12 and click Console tab.";
                 }
             })
+        }
+
+        var headerOption = {
+            height: 30,
+            font: {
+                name: "Comic Sans MS",
+                family: 4,
+                size: 16,
+                bold: true
+            },
+            alignment: {
+                horizontal: "center",
+                vertical: "middle"
+            }
+        };
+        var data = [
+            [
+                {
+                    value: "Key",
+                    options: headerOption
+                },
+                {
+                    value: "Name",
+                    options: headerOption
+                },
+                {
+                    value: "Image",
+                    options: {
+                        width: 300,
+                        ...headerOption
+                    }
+                },
+            ],
+            [
+                { value: 1 },
+                { value: "Jeremy" }
+            ],
+            [
+                { value: 2 },
+                { value: "Conan" }
+            ],
+            [
+                { value: 3 },
+                { value: "Other" }
+            ]
+        ]
+
+        var images = [
+            {
+                value: "https://jeremyjone.github.io/toolbox/test/images/pic4(614x596).jpg",
+                isBase64: false,
+                r: 2,
+                c: 3
+            },
+            {
+                value: "https://desktop.jeremyjone.com/my-test/banner/02.jpg",
+                isBase64: false,
+                r: 2,
+                c: 3,
+                offset: 0.1
+            },
+            {
+                value: "https://desktop.jeremyjone.com/my-test/banner/03.jpg",
+                isBase64: false,
+                r: 3,
+                c: 3
+            },
+            {
+                value: "https://desktop.jeremyjone.com/my-test/icon/00.png",
+                isBase64: false,
+                r: 4,
+                c: 3
+            }
+        ]
+        function onClickDown(e) {
+            var excel = new JzExcel.ExportExcel("my file");
+
+            var sheetName = "mySheet";
+            excel.addSheet(sheetName);
+            excel.addContents(sheetName, data);
+            excel.addImagesAsync(sheetName, images).then(() => {
+                excel.export("my-file");
+            });
         }
     </script>
 </body>

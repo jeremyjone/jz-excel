@@ -1,3 +1,5 @@
+import ExcelJS from "exceljs";
+
 export type JExcelInfo = {
   appversion: string;
   company: string;
@@ -51,7 +53,7 @@ export type JExcelSheets = {
   [key: string]: any;
 };
 
-export declare function parseExcel(
+declare function parseExcel(
   excel: File,
   cb: (
     data: null | {
@@ -61,3 +63,35 @@ export declare function parseExcel(
     err: undefined | any
   ) => any
 ): void;
+
+declare class ExportExcel {
+  constructor(companyName?: string);
+
+  setCompanyName(name: string): void;
+  addSheet(name: string): string;
+  addContents(
+    sheetName: string,
+    contents: Array<
+      Array<{
+        value: ExcelJS.CellValue;
+        options?: {
+          width?: number;
+          height?: number;
+          font?: Partial<ExcelJS.Font>;
+          alignment?: Partial<ExcelJS.Alignment>;
+        };
+      }>
+    >
+  ): void;
+  addImagesAsync(
+    sheetName: string,
+    images: Array<{
+      value: string;
+      isBase64: boolean;
+      r: number;
+      c: number;
+      offset?: number;
+    }>
+  ): Promise<any>;
+  export(filename: string): Promise<any>
+}

@@ -1,11 +1,11 @@
 {
   "name": "jz-excel",
-  "version": "1.0.2",
-  "description": "parse excel file tools",
+  "version": "1.0.4",
+  "description": "Excel transform Json tools",
   "main": "src/index.js",
   "typings": "types/index.d.ts",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "jeremyjone",
@@ -20,6 +20,7 @@
     "webpack-cli": "^4.3.1"
   },
   "dependencies": {
+    "exceljs": "^4.2.1",
     "jszip": "^3.5.0"
   }
 }

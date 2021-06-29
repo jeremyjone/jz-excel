@@ -4,7 +4,19 @@
 
 [[GitHub](https://github.com/jeremyjone/jz-excel)]
 
-Parse excel file(only .xlsx) to JSON based on LuckySheet code. It parses everything, including images, by row and column.
+## A Excel ← Transform → Json tool.
+
+Using this tool, you can convert Excel to Json, and also can convert Json to Excel. This works well for exporting tabular data from the page.
+
+- Excel to Json： is the overall simplified parsing tool for the `LuckySheet` open source framework. According to the content of its framework, all the contents are sorted out and modified one by one to create the present parsing tool.
+
+- Json to Excel：Use the `exceljs` framework for parsing assembly.
+
+### Features
+
+- Convert data by row and by column
+- You can convert images
+- Matches the `Luckysheet` format
 
 ## Demo
 
@@ -25,14 +37,16 @@ yarn add jz-excel
 ## Link
 
 ```html
-<script src="https://desktop.jeremyjone.com/resource/js/jz-excel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.2/dist/index.min.js"></script>
 ```
 
 ## Use
 
 It very easy to use.
 
-```bash
+### Parse Excel
+
+```js
 import { parseExcel } from "jz-excel"
 ```
 
@@ -65,9 +79,32 @@ parseExcel(excel, function (data, err) {
 
 `data` is `object | null`, includes `info` and `sheets`, same as Luckysheet.
 
+### Export Excel
+
+```js
+import { ExportExcel } from "jz-excel";
+```
+
+It's a `class` that adds `worksheet`, `contents`, `images`(if any) in that order, and then it's ready to export.
+
+```js
+var excel = new JzExcel.ExportExcel("my company");
+
+var sheetName = "mySheet";
+excel.addSheet(sheetName);
+excel.addContents(sheetName, data);
+excel.addImagesAsync(sheetName, images).then(() => {
+  excel.export("my-file");
+});
+```
+
+For data formats, refer to the corresponding `TypeScript`.
+
 ### Typescript support
 
 I wrote a simple type support.
+
+Parse method declaration:
 
 ```ts
 declare function parseExcel(
@@ -80,6 +117,42 @@ declare function parseExcel(
     err: undefined | any
   ) => any
 ): void;
+```
+
+Export class declaration:
+
+```ts
+declare class ExportExcel {
+  constructor(companyName?: string);
+
+  setCompanyName(name: string): void;
+  addSheet(name: string): string;
+  addContents(
+    sheetName: string,
+    contents: Array<
+      Array<{
+        value: ExcelJS.CellValue;
+        options?: {
+          width?: number;
+          height?: number;
+          font?: Partial<ExcelJS.Font>;
+          alignment?: Partial<ExcelJS.Alignment>;
+        };
+      }>
+    >
+  ): void;
+  addImagesAsync(
+    sheetName: string,
+    images: Array<{
+      value: string;
+      isBase64: boolean;
+      r: number;
+      c: number;
+      offset?: number;
+    }>
+  ): Promise<any>;
+  export(filename: string): Promise<any>;
+}
 ```
 
 ## Special

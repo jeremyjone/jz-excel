@@ -125,7 +125,7 @@ const indexedColors = {
   "65": null
 };
 
-function getptToPxRatioByDPI() {
+export function getptToPxRatioByDPI() {
   return 72 / 96;
 }
 
@@ -669,3 +669,49 @@ export function getlineStringAttr(frpr, attr) {
 
   return value;
 }
+
+export function getAspectRatio() {
+  return 16 / 9;
+}
+
+export function getBase64Image(url) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+
+    image.onload = function() {
+      const canvas = document.createElement("canvas");
+      canvas.width = image.width;
+      canvas.height = image.height;
+
+      canvas.getContext("2d")?.drawImage(image, 0, 0);
+      const dataURI = canvas.toDataURL("image/png");
+      resolve(dataURI);
+    };
+
+    image.onerror = function() {
+      // on failure
+      reject("Error Loading Image");
+    };
+
+    image.setAttribute("crossOrigin", "anonymous");
+    image.src = url;
+  });
+}
+
+export const boringWait = (cond, timeout = 10000) => {
+  return new Promise((resolve, reject) => {
+    let time = 0;
+    const t = setInterval(() => {
+      time++;
+      if (cond()) {
+        clearInterval(t);
+        resolve();
+      }
+      if (time > timeout / 100) {
+        // 大于10秒，超时
+        clearInterval(t);
+        reject();
+      }
+    }, 100);
+  });
+};

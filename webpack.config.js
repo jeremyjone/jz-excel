@@ -10,10 +10,14 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
-    library: "jz-excel",
+    library: "JzExcel",
     libraryExport: "default",
     globalObject: "this",
     libraryTarget: "umd"
+  },
+  externals: {
+    // exceljs: "exceljs",
+    // jszip: "jszip"
   },
   module: {
     rules: [

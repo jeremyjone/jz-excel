@@ -9,7 +9,7 @@ import {
   isJapanese,
   isKoera,
   getlineStringAttr
-} from "./func";
+} from "../tools/func";
 
 const ST_CellType = {
   Boolean: "b",
@@ -46,22 +46,41 @@ export class Sheet {
       drawingRelsFile = options.drawingRelsFile;
 
     if (drawingFile != null && drawingRelsFile != null) {
+      const oneCellAnchors = this.xml.getElementsByTagName(
+        "xdr:oneCellAnchor",
+        drawingFile
+      );
+
       const twoCellAnchors = this.xml.getElementsByTagName(
         "xdr:twoCellAnchor",
         drawingFile
       );
 
-      if (twoCellAnchors != null && twoCellAnchors.length > 0) {
-        for (let i = 0; i < twoCellAnchors.length; i++) {
-          const twoCellAnchor = twoCellAnchors[i];
+      let cellAnchors,
+        finishPosTag,
+        isOneCellAnchor = false;
+
+      if (oneCellAnchors != null && oneCellAnchors.length > 0) {
+        cellAnchors = oneCellAnchors;
+        finishPosTag = "xdr:ext";
+        isOneCellAnchor = true;
+      } else if (twoCellAnchors != null && twoCellAnchors.length > 0) {
+        cellAnchors = twoCellAnchors;
+        finishPosTag = "xdr:to";
+      }
+
+      if (cellAnchors.length > 0) {
+        for (let i = 0; i < cellAnchors.length; i++) {
+          const cellAnchor = cellAnchors[i];
           const editAs = getXmlAttibute(
-            twoCellAnchor.attributeList,
+            cellAnchor.attributeList,
             "editAs",
-            "twoCell"
+            "oneCell"
           );
-          const xdrFroms = twoCellAnchor.getInnerElements("xdr:from"),
-            xdrTos = twoCellAnchor.getInnerElements("xdr:to");
-          const xdr_blipfills = twoCellAnchor.getInnerElements("a:blip");
+
+          const xdrFroms = cellAnchor.getInnerElements("xdr:from"),
+            xdrTos = cellAnchor.getInnerElements(finishPosTag),
+            xdr_blipfills = cellAnchor.getInnerElements("a:blip");
 
           if (
             xdrFroms != null &&
@@ -96,15 +115,15 @@ export class Sheet {
             imageObject.fromRowOff = getPxByEMUs(
               this.getXdrValue(xdrFrom.getInnerElements("xdr:rowOff"))
             );
-            imageObject.toCol = this.getXdrValue(
-              xdrTo.getInnerElements("xdr:col")
-            );
+            imageObject.toCol = isOneCellAnchor
+              ? imageObject.fromCol
+              : this.getXdrValue(xdrTo.getInnerElements("xdr:col"));
             imageObject.toColOff = getPxByEMUs(
               this.getXdrValue(xdrTo.getInnerElements("xdr:colOff"))
             );
-            imageObject.toRow = this.getXdrValue(
-              xdrTo.getInnerElements("xdr:row")
-            );
+            imageObject.toRow = isOneCellAnchor
+              ? imageObject.fromRow
+              : this.getXdrValue(xdrTo.getInnerElements("xdr:row"));
             imageObject.toRowOff = getPxByEMUs(
               this.getXdrValue(xdrTo.getInnerElements("xdr:rowOff"))
             );
@@ -620,7 +639,7 @@ class SheetCelldata {
   }
 
   htmlDecode(str) {
-    return str.replace(/&#(x)?([^&]{1,5});?/g, function($, $1, $2) {
+    return str.replace(/&#(x)?([^&]{1,5});?/g, function ($, $1, $2) {
       return String.fromCharCode(parseInt($2, $1 ? 16 : 10));
     });
   }

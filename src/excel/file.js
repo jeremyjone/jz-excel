@@ -1,4 +1,4 @@
-import { getXmlAttibute } from "./func";
+import { getXmlAttibute } from "../tools/func";
 import { ParseImage } from "./image";
 import { Sheet } from "./sheet";
 import { ReadXml } from "./xml";
