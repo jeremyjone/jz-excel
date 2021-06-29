@@ -4,6 +4,8 @@
 
 [[GitHub](https://github.com/jeremyjone/jz-excel)]
 
+![](./src/assets/logo.png)
+
 ## A Excel ← Transform → Json tool.
 
 Using this tool, you can convert Excel to Json, and also can convert Json to Excel. This works well for exporting tabular data from the page.

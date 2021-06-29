@@ -4,6 +4,8 @@
 
 [[GitHub](https://github.com/jeremyjone/jz-excel)]
 
+![](./src/assets/logo.png)
+
 ## 一个 Excel ← 转换 → Json 的工具。
 
 使用该工具，可以任意将 Excel 转换为 Json，同时可以将 Json 转换为 Excel。这对于导出页面中的表格数据有很好的效果。
