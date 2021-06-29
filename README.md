@@ -37,7 +37,7 @@ yarn add jz-excel
 ## Link
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.2/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.4/dist/index.min.js"></script>
 ```
 
 ## Use
