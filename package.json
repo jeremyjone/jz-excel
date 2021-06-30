@@ -1,6 +1,6 @@
 {
   "name": "jz-excel",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Excel transform Json tools",
   "main": "src/index.js",
   "typings": "types/index.d.ts",

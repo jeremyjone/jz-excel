@@ -83,6 +83,10 @@ export function parseExcel(excel, cb) {
           fileType = "arraybuffer";
         }
 
+        // FIXME: 一个奇怪的问题，async 返回的 Promise 在浏览器中一直处于 Pending。
+        // 但是之前 v1.0.2 打包的文件在浏览器中可以执行，函数没有动过，看过源码，没啥问题。
+        // 已经提问，无人问津，苦涩。。。🤯 https://stackoverflow.com/questions/68172627/zipobject-async-function-not-work-in-browser
+        // 如果亲爱的你看到了这个问题，并且有方案，欢迎 PR 一下。🤓 https://github.com/jeremyjone/jz-excel
         zip.files[filename].async(fileType).then(data => {
           if (fileType == "base64") {
             data = "data:image/" + suffix + ";base64," + data;

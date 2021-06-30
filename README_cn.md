@@ -39,8 +39,10 @@ yarn add jz-excel
 ## 直接引入
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.4/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.2/dist/index.min.js"></script>
 ```
+
+**注意**：推荐使用 `node` 环境，浏览器环境下需要使用1.0.2版本。新版本有已知问题，会导致读不出数据~~~
 
 ## 如何使用
 
@@ -95,6 +97,7 @@ var excel = new JzExcel.ExportExcel("my company");
 var sheetName = "mySheet";
 excel.addSheet(sheetName);
 excel.addContents(sheetName, data);
+// 添加图片必须是异步操作
 excel.addImagesAsync(sheetName, images).then(() => {
   excel.export("my-file");
 });

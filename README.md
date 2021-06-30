@@ -39,8 +39,10 @@ yarn add jz-excel
 ## Link
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.4/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jz-excel/dist/index.min.js"></script>
 ```
+
+**Note** : The `node` environment is recommended, version 1.0.2 is required in the browser environment. The new version has known problems that cause unreadable data~~~
 
 ## Use
 
@@ -95,6 +97,7 @@ var excel = new JzExcel.ExportExcel("my company");
 var sheetName = "mySheet";
 excel.addSheet(sheetName);
 excel.addContents(sheetName, data);
+// add image must be a async operation
 excel.addImagesAsync(sheetName, images).then(() => {
   excel.export("my-file");
 });

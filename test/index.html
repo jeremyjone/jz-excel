@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jz-Excel test</title>
     <script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.2/dist/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jz-excel@1.0.4/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jz-excel/dist/index.min.js"></script>
+    <!-- <script src="../dist/index.min.js"></script> -->
 </head>
 
 <body>
@@ -63,6 +64,7 @@
             var excel = e.target.files[0];
             // Here has some problem, parseExcel in v1.0.3+ can not work in browser.
             // Use v1.0.2, but it's old methods, just for example.
+            /** JzExcel.parseExcel(excel, function (data, err) { */
             parseExcel(excel, function (data, err) {
                 if (err) {
                     div.innerHTML = err;
